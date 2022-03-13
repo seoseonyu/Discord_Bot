@@ -23,7 +23,6 @@ for (const file of commandFiles) {
     commands.push(command.data.toJSON());
 }
 
-
 const rest = new REST({ version: '9' }).setToken(process.env.Token);
 (async () => {
 	try {
@@ -43,15 +42,14 @@ client.once('ready', () => {
 });
 
 client.on('interactionCreate', async (interaction) => {
-    console.log(interaction)
 	if (!interaction.isCommand()) return;
-
+    
 	const command = client.commands.get(interaction.commandName);
 
 	if (!command) return;
 
 	try {
-		await command.execute(interaction);
+		await command.execute(interaction, client);
 	} catch (error) {
 		console.error(error);
 		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
